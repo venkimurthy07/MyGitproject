@@ -123,6 +123,7 @@ getPictureFromGallery();
                     for (File temp : f.listFiles()) {
                         if (temp.getName().equals("temp.jpg")) {
                             f = temp;
+                            //hi
                             break;
                         }
                     }
