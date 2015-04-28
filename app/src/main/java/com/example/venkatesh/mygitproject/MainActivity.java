@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -73,7 +74,29 @@ Button submit;
             public void onClick(View v) {
 
 
-getPictureFromGallery();
+//getPictureFromGallery();
+                Bitmap bottomImage = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.image1);
+                Bitmap topImage = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.image2);
+
+// As described by Steve Pomeroy in a previous comment,
+// use the canvas to combine them.
+// Start with the first in the constructor..
+                Canvas comboImage = new Canvas(bottomImage);
+// Then draw the second on top of that
+                comboImage.drawBitmap(topImage, 0f, 0f, null);
+
+// bottomImage is now a composite of the two.
+
+// To write the file out to the SDCard:
+                OutputStream os = null;
+                try {
+                    os = new FileOutputStream("/sdcard/DCIM/Camera/" + "myNewFileName.png");
+                    bottomImage.compress(Bitmap.CompressFormat.PNG, 50, os);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+
+
 
             }
         });
@@ -123,6 +146,7 @@ getPictureFromGallery();
                     for (File temp : f.listFiles()) {
                         if (temp.getName().equals("temp.jpg")) {
                             f = temp;
+                            //hi
                             break;
                         }
                     }
